@@ -4,12 +4,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pdb 
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 
 
 train = list(csv.reader(open("higgsb/training.csv","r"), delimiter=','))
 
 print("Nombre d'exemples dans le train :",len(train))
 xs = np.array([list(map(float, row[1:-2])) for row in train[1:]])
+ys = np.array([row[-1] for row in train[1:]])
+
 
 (numPoints,numFeatures) = xs.shape
 
@@ -47,3 +50,23 @@ print(train.describe(include='all'))
 sns.heatmap(train.corr(), annot=False)
 fig, ax = plt.subplots()
 train['Label'].value_counts().plot(ax=ax, kind='bar')
+
+x_train, x_test, y_train, y_test = train_test_split(xs,ys)
+
+        
+        
+def plus_freq(x_train, y_train): 
+    sSelector = np.where(y_train == 's')
+    bSelector = np.where(y_train == 'b')
+    p_s = len(sSelector)/len(y_train)
+    p_b = len(bSelector)/len(y_train)
+    if p_s > p_b: 
+        return 's'
+    else: 
+        return 'b'
+
+def random_clf(x_train, y_train):
+    res = []    
+    
+
+    
